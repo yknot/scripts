@@ -1,8 +1,9 @@
 #!/usr/local/bin/python3
+"""compares two mat files"""
 
-import scipy.io as sio
 import sys
 import os
+import scipy.io as sio
 import numpy as np
 
 if len(sys.argv) != 3:
@@ -20,7 +21,7 @@ else:
         print(sys.argv[2] + " keys: " + " ".join(keys2))
         sys.exit()
 
-        
+
     for k in keys1:
         if k[:2] != '__':
             if not np.allclose(data1[k], data2[k]):
