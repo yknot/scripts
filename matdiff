@@ -11,8 +11,8 @@ if len(sys.argv) != 3:
     sys.exit()
 else:
     match = 1
-    data1 = sio.loadmat(os.getcwd() + '/' + sys.argv[1])
-    data2 = sio.loadmat(os.getcwd() + '/' + sys.argv[2])
+    data1 = sio.loadmat(os.path.join(os.getcwd(), sys.argv[1]))
+    data2 = sio.loadmat(os.path.join(os.getcwd(), sys.argv[2]))
     keys1 = sorted(data1.keys())
     keys2 = sorted(data2.keys())
     if len(set(keys1).difference(keys2)):
