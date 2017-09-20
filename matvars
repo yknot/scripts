@@ -1,14 +1,14 @@
 #!/usr/local/bin/python3
 
-import scipy.io as sio
 import sys
 import os
+import scipy.io as sio
 
 if len(sys.argv) != 2:
     print("Usage: matvars <filename>")
     sys.exit()
 else:
-    data = sio.loadmat(os.getcwd() + '/' + sys.argv[1])
+    data = sio.loadmat(os.path.join(os.getcwd(), sys.argv[1]))
     keys = sorted(data.keys())
     for k in keys:
         if k[:2] != '__':

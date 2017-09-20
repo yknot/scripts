@@ -1,0 +1,15 @@
+#!/usr/local/bin/python3
+
+import sys
+import os
+import numpy as np
+
+if len(sys.argv) != 2:
+    print("Usage: npyvars <filename>")
+    sys.exit()
+else:
+    data = np.load(os.path.join(os.getcwd(), sys.argv[1]))
+    if isinstance(data, np.ndarray):
+        keys = sorted(data.keys())
+        for k in keys:
+            print(k + '\t' + str(data[k].shape))
