@@ -1,0 +1,50 @@
+#!/usr/local/bin/python3
+"""Script checks for pronouns in the file"""
+import argparse
+import time
+
+# read arguments
+parser = argparse.ArgumentParser(
+    description='Monitor a file for pronoun usage')
+parser.add_argument('filename', metavar="filename",
+                    type=str, help="Name of file to monitor")
+args = parser.parse_args()
+
+pronouns = set(['we', 'our', 'us', 'your', 'you'])
+
+# default value if the file is clear
+prev_found = {-1: ''}
+found = {}
+# loop to look for pronouns
+while True:
+    # open the file each time
+    with open(args.filename) as f:
+        lines = f.readlines()
+        for i, line in enumerate(lines):
+            # remove \n, lowercase and split on space to tokenize
+            l = line.rstrip().lower().split(' ')
+            # if a comment line then ignore (specifically for tex files)
+            if args.filename.endswith('.tex') and l[0] == '%':
+                continue
+            # if we found a pronoun on the line add to dictionary
+            if pronouns.intersection(set(l)):
+                found[i] = line.rstrip()
+
+    # if this is different from last time
+    if found != prev_found:
+        # nothing found
+        if not found:
+            print('File Clear!')
+        # found print out results
+        else:
+            # TODO add highlight of word that was found
+            for k, v in found.items():
+                print('{}:\t{}'.format(k, v))
+        print('\n')
+
+    # shuffle found to prev_found
+    prev_found = found
+    found = {}
+
+    # sleep before next run
+    time.sleep(5)
