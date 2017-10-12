@@ -10,7 +10,7 @@ parser.add_argument('filename', metavar="filename",
                     type=str, help="Name of file to monitor")
 args = parser.parse_args()
 
-pronouns = set(['we', 'our', 'us', 'your', 'you'])
+pronouns = set(['we', 'our', 'us', 'your', 'you', 'they'])
 
 # default value if the file is clear
 prev_found = {-1: ''}
