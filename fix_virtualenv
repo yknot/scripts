@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+# https://gist.github.com/ttimasdf/34bc85ac008f68b2ee098850cab2979c#file-fix_virtualenv
 ENV_PATH="$(dirname "$(dirname "$(which pip)")")"
 SYSTEM_VIRTUALENV="$(which -a virtualenv|tail -1)"
 
