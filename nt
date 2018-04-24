@@ -1,0 +1,27 @@
+#!/usr/local/bin/python3
+
+import os
+
+path = os.path.expanduser('~/Dropbox/')
+
+files = os.listdir(path)
+# limit to txt files
+files = [f for f in files if f.endswith('.txt')]
+if not files:
+    print('No files found')
+
+for f in files:
+    # get first line without markdown header and newline at the end
+    head = open(os.path.join(path, f)).readlines()[0].strip('# \n')
+    title = f.strip('.txt') + ' ' + head
+    while True:
+        print(title)
+        raw = input('Title of txt file will be "{}".\n'.format(title) +
+                    ' Enter to confirm, otherwise type new title:\n')
+        if raw:
+            title = raw
+        else:
+            break
+
+    os.rename(os.path.join(path, f),
+              os.path.join(path, 'Apps/Notes/', title + '.txt'))
