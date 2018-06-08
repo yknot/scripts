@@ -17,3 +17,9 @@ while ps -o lstart= -p $pid; do
     date | tee -a watch_process_$pid.log
     sleep 5
 done
+
+# cut out the middle of the file
+start=$(head -1 watch_process_$pid.log)
+end=$(tail -1 watch_process_$pid.log)
+echo $start > watch_process_$pid.log
+echo $end | tee -a watch_process_$pid.log
