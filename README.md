@@ -25,5 +25,8 @@ Call the automator script to combine pdf files
 ## pronoun_checker
 Checks a file continously for pronouns. Useful for writing and making sure you don't use pronouns (as I am prone to do)
 
+## time_cmd
+Times given pid and outputs to a file
+
 # TODO
 * Combine matdiff, matvars, npyvars files
