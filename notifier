@@ -1,0 +1,15 @@
+#!/usr/local/bin/python3
+
+import telegram
+import sys
+import json
+
+if len(sys.argv) != 2:
+    print('Add text for message')
+    sys.exit()
+
+file_paths = json.load(open('telegram_keys.json'))
+
+bot = telegram.Bot(token=open(file_paths['api_key']).read().strip())
+bot.send_message(chat_id=open(
+    file_paths['chat_id']).read().strip(), text=sys.argv[1])
