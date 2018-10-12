@@ -1,0 +1,15 @@
+#!/bin/bash
+
+
+if [ "$#" -ne 2 ] ; then
+    echo 'Usage: renamer <pat1> <pat2>'
+    exit 0
+fi
+
+
+for i in *
+do
+    echo "mv $i $i"
+done |
+    grep $1 | 
+    sed -e "s/\(.*\)$1/\1$2/"
