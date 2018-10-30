@@ -8,7 +8,7 @@ if len(sys.argv) != 2:
     print('Add text for message')
     sys.exit()
 
-file_paths = json.load(open('telegram_keys.json'))
+file_paths = json.load(open('~/bin/telegram_keys.json'))
 
 bot = telegram.Bot(token=open(file_paths['api_key']).read().strip())
 bot.send_message(chat_id=open(
