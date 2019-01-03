@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+pandoc --from markdown-auto_identifiers --to latex $1 | sed -n '1!p' | pbcopy
