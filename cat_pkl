@@ -1,0 +1,11 @@
+#!/usr/local/bin/python3
+
+import pickle as pkl
+import pprint
+import sys
+
+if len(sys.argv) != 2:
+    print('Usage: cat_pkl <filename>')
+    sys.exit()
+
+pprint.pprint(pkl.load(open(sys.argv[1], 'rb')))
