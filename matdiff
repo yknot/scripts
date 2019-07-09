@@ -1,32 +1,42 @@
-#!/usr/local/bin/python3
+#!/Users/andrewyale/.virtualenvs/default/bin/python
 """compares two mat files"""
 
 import sys
 import os
 import scipy.io as sio
 import numpy as np
+import pandas as pd
 
 if len(sys.argv) != 3:
     print("Usage: matdiff <filename> <filename2>")
     sys.exit()
 else:
-    match = 1
-    data1 = sio.loadmat(os.path.join(os.getcwd(), sys.argv[1]))
-    data2 = sio.loadmat(os.path.join(os.getcwd(), sys.argv[2]))
-    keys1 = sorted(data1.keys())
-    keys2 = sorted(data2.keys())
-    if len(set(keys1).difference(keys2)):
-        print("Variables are different")
-        print(sys.argv[1] + " keys: " + " ".join(keys1))
-        print(sys.argv[2] + " keys: " + " ".join(keys2))
-        sys.exit()
+    match = True
 
+    if sys.argv[1].endswith(".mat"):
+        data1 = sio.loadmat(os.path.join(os.getcwd(), sys.argv[1]))
+        data2 = sio.loadmat(os.path.join(os.getcwd(), sys.argv[2]))
 
-    for k in keys1:
-        if k[:2] != '__':
-            if not np.allclose(data1[k], data2[k]):
-                print("Variable " + k + " does not match")
-                match = 0
+        keys1 = sorted(data1.keys())
+        keys2 = sorted(data2.keys())
+        if len(set(keys1).difference(keys2)):
+            print("Variables are different")
+            print(sys.argv[1] + " keys: " + " ".join(keys1))
+            print(sys.argv[2] + " keys: " + " ".join(keys2))
+            sys.exit()
+        for k in keys1:
+            if k[:2] != "__":
+                if not np.allclose(data1[k], data2[k]):
+                    print("Variable " + k + " does not match")
+                    match = False
+
+    elif sys.argv[1].endswith(".csv"):
+        data1 = pd.read_csv(os.path.join(os.getcwd(), sys.argv[1]))
+        data2 = pd.read_csv(os.path.join(os.getcwd(), sys.argv[2]))
+
+        if not np.allclose(data1, data2):
+            print("Doesn't match")
+            match = False
 
 
 if match:
