@@ -1,5 +1,5 @@
 #!/Users/andrewyale/.virtualenvs/default/bin/python
-"""compares two mat files"""
+"""compares two matrices files"""
 
 import sys
 import os
@@ -33,11 +33,25 @@ else:
     elif sys.argv[1].endswith(".csv"):
         data1 = pd.read_csv(os.path.join(os.getcwd(), sys.argv[1]))
         data2 = pd.read_csv(os.path.join(os.getcwd(), sys.argv[2]))
+        if data1.shape != data2.shape:
+            print("Shapes are different")
+            sys.exit()
 
-        if not np.allclose(data1, data2):
-            print("Doesn't match")
-            match = False
-
+        try:
+            if not np.allclose(data1, data2):
+                print("Doesn't match")
+                match = False
+        except TypeError as te:
+            if not np.allclose(
+                    data1.select_dtypes(exclude='object'),
+                    data2.select_dtypes(exclude='object')):
+                print("Numbers don't match")
+                match = False
+            if not (data1.select_dtypes(
+                    include='object') == data2.select_dtypes(
+                        include='object')).values.all():
+                print("Objects don't match")
+                match = False
 
 if match:
     print("All variables match")
