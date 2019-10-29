@@ -1,0 +1,28 @@
+#!/usr/local/bin/python3
+
+import sys
+import os
+
+
+if len(sys.argv) > 2:
+    print('Usage: deft <folder_name>')
+    sys.exit()
+elif len(sys.argv) == 1:
+    os.system('open -n -a Emacs --args -q --load "~/.deft"')
+    sys.exit()
+
+
+
+# duplicate .deft to temp and change folder
+cfg = open(os.path.expanduser('~/bin/.deft')).readlines()
+
+print(os.path.join(os.getcwd(), sys.argv[1]))
+
+for i, c in enumerate(cfg):
+    if c.startswith('(setq deft-directory'):
+        cfg[i] = f'(setq deft-directory "{os.path.join(os.getcwd(), sys.argv[1])}")\n'
+
+open(os.path.expanduser('~/bin/.deft_tmp'), 'w').write(''.join(cfg))
+os.system('open -n -a Emacs --args -q --load "~/bin/.deft_tmp"')
+
+
