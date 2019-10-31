@@ -16,7 +16,6 @@ elif len(sys.argv) == 1:
 # duplicate .deft to temp and change folder
 cfg = open(os.path.expanduser('~/bin/.deft')).readlines()
 
-print(os.path.join(os.getcwd(), sys.argv[1]))
 
 for i, c in enumerate(cfg):
     if c.startswith('(setq deft-directory'):
