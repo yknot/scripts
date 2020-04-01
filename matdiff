@@ -3,55 +3,61 @@
 
 import sys
 import os
-import scipy.io as sio
 import numpy as np
-import pandas as pd
 
 if len(sys.argv) != 3:
     print("Usage: matdiff <filename> <filename2>")
     sys.exit()
-else:
-    match = True
 
-    if sys.argv[1].endswith(".mat"):
-        data1 = sio.loadmat(os.path.join(os.getcwd(), sys.argv[1]))
-        data2 = sio.loadmat(os.path.join(os.getcwd(), sys.argv[2]))
+match = True
 
-        keys1 = sorted(data1.keys())
-        keys2 = sorted(data2.keys())
-        if len(set(keys1).difference(keys2)):
-            print("Variables are different")
-            print(sys.argv[1] + " keys: " + " ".join(keys1))
-            print(sys.argv[2] + " keys: " + " ".join(keys2))
-            sys.exit()
-        for k in keys1:
-            if k[:2] != "__":
-                if not np.allclose(data1[k], data2[k]):
-                    print("Variable " + k + " does not match")
-                    match = False
+if sys.argv[1].endswith(".mat"):
+    import scipy.io as sio
 
-    elif sys.argv[1].endswith(".csv"):
-        data1 = pd.read_csv(os.path.join(os.getcwd(), sys.argv[1]))
-        data2 = pd.read_csv(os.path.join(os.getcwd(), sys.argv[2]))
-        if data1.shape != data2.shape:
-            print("Shapes are different")
-            sys.exit()
+    data1 = sio.loadmat(os.path.join(os.getcwd(), sys.argv[1]))
+    data2 = sio.loadmat(os.path.join(os.getcwd(), sys.argv[2]))
 
-        try:
-            if not np.allclose(data1, data2):
-                print("Doesn't match")
+    keys1 = sorted(data1.keys())
+    keys2 = sorted(data2.keys())
+    if len(set(keys1).difference(keys2)):
+        print("Variables are different")
+        print(sys.argv[1] + " keys: " + " ".join(keys1))
+        print(sys.argv[2] + " keys: " + " ".join(keys2))
+        sys.exit()
+    for k in keys1:
+        if k[:2] != "__":
+            if not np.allclose(data1[k], data2[k]):
+                print("Variable " + k + " does not match")
                 match = False
-        except TypeError as te:
-            if not np.allclose(
-                    data1.select_dtypes(exclude='object'),
-                    data2.select_dtypes(exclude='object')):
-                print("Numbers don't match")
-                match = False
-            if not (data1.select_dtypes(
-                    include='object') == data2.select_dtypes(
-                        include='object')).values.all():
-                print("Objects don't match")
-                match = False
+
+elif sys.argv[1].endswith(".csv"):
+    import pandas as pd
+
+    data1 = pd.read_csv(os.path.join(os.getcwd(), sys.argv[1]))
+    data2 = pd.read_csv(os.path.join(os.getcwd(), sys.argv[2]))
+    if data1.shape != data2.shape:
+        print("Shapes are different")
+        sys.exit()
+
+    if all(data1 == data2):
+        print("All variables match")
+        sys.exit()
+
+    try:
+        if not np.allclose(data1, data2):
+            print("Doesn't match")
+            match = False
+    except TypeError as te:
+        if not np.allclose(
+                data1.select_dtypes(exclude='object'),
+                data2.select_dtypes(exclude='object')):
+            print("Numbers don't match")
+            match = False
+        if not (data1.select_dtypes(
+                include='object') == data2.select_dtypes(
+                    include='object')).values.all():
+            print("Objects don't match")
+            match = False
 
 if match:
     print("All variables match")
