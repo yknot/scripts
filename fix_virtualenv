@@ -8,7 +8,7 @@ echo "Ensure the root of current virtualenv:"
 echo "    $ENV_PATH"
 read -p "‼️  Say no if you are not sure (y/N) " -n 1 -r
 echo
-PYEXC_DEF="$(sed -n '1s/^#!//p' $SYSTEM_VIRTUALENV)"
+PYEXC_DEF="$HOME/.pyenv/shims/python"
 read -p "🐍  Choose which python to use? [$PYEXC_DEF] " PYEXC
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
